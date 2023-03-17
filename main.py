@@ -3,14 +3,33 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 import numpy
+import pandas as pd
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import make_pipeline
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    # 创建一个pipeline对象
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    pipe = make_pipeline(
+        StandardScaler(),
+        LogisticRegression()
+    )
+
+    # 加载数据
+    X, y = load_iris(return_X_y=True)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+    # 训练pipeline
+    pipe.fit(X_train, y_train)
+
+    # 输出准确率
+    print(accuracy_score(pipe.predict(X_test), y_test))
